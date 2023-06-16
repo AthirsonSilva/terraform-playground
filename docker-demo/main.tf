@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    docker = {
-      source = "kreuzwerker/docker"
-    }
-  }
-}
-provider "docker" {}
-
 variable "image" {
   type        = string
   description = "Docker image name"
