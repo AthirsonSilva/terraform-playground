@@ -11,10 +11,11 @@ resource "aws_lb" "load_balancer" {
 # Create a AWS Load balancer target group
 # This target group will be used by the load balancer
 resource "aws_lb_target_group" "lb_target_group" {
-  name     = "my-lb-target-group"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.demo_vpc.id
+  name        = "my-lb-target-group"
+  port        = 80
+  protocol    = "HTTP"
+  vpc_id      = aws_vpc.demo_vpc.id
+  target_type = "ip"
 }
 
 # Create a AWS Load balancer listener rule
