@@ -1,3 +1,7 @@
+output "public_ip" {
+  value = aws_ecs_task_definition.task.arn
+}
+
 # Output Container ID
 output "container_ip" {
   value = aws_ecs_service.my_service.id
@@ -7,7 +11,6 @@ output "container_ip" {
 output "cluter_id" {
   value = aws_ecs_cluster.my_cluster.id
 }
-
 
 # Output DNS record name
 output "dns_record" {

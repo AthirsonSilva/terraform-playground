@@ -1,14 +1,21 @@
 terraform {
   required_providers {
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "~>3.0.1"
+    }
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
+      version = "~> 4.56.0"
     }
   }
 }
 
-# Configure the AWS provider
+# Configuring AWS as the provider
 provider "aws" {
-  region                   = "sa-east-1" # Update with your desired AWS region
+  region                   = var.aws_region
   shared_credentials_files = ["~/.aws/credentials"]
-  profile                  = "default"
 }
+
+# Configuring Docker as the provider
+provider "docker" {}
