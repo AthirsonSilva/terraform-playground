@@ -1,8 +1,3 @@
-# Output ECR repository URL
-output "ecr_repo_url" {
-  value = aws_ecr_repository.ecr_repo.repository_url
-}
-
 # Output ECS cluster name
 output "ecs_cluster_name" {
   value = aws_ecs_cluster.ecs_cluster.name
@@ -26,4 +21,8 @@ output "dns_zone_id" {
 # Output DNS zone name
 output "dns_zone_name" {
   value = aws_route53_zone.dns_zone.name
+}
+
+output "load_balancer" {
+  value = aws_lb.load_balancer.dns_name
 }
