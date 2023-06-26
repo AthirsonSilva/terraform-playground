@@ -1,6 +1,7 @@
-# Creating an ECS cluster
-resource "aws_ecs_cluster" "cluster" {
-  name = "cluster"
+# Create an ECS cluster
+# This cluster will run the ECS service
+resource "aws_ecs_cluster" "ecs_cluster" {
+  name = "my-ecs-cluster"
 
   setting {
     name  = "containerInsights"
@@ -8,8 +9,9 @@ resource "aws_ecs_cluster" "cluster" {
   }
 }
 
-# Creating an ECS task definition
-resource "aws_ecs_task_definition" "task" {
+# Create an ECS task definition
+# This task definition will run the docker container created above
+resource "aws_ecs_task_definition" "ecs_task_definition" {
   family                   = "service"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE", "EC2"]
@@ -33,23 +35,24 @@ resource "aws_ecs_task_definition" "task" {
   ])
 }
 
-# Creating an ECS service
-resource "aws_ecs_service" "service" {
-  name             = "service"
-  cluster          = aws_ecs_cluster.cluster.id
-  task_definition  = aws_ecs_task_definition.task.arn
+# Create an ECS service
+# This service will run the task definition created above
+resource "aws_ecs_service" "ecs_service" {
+  name             = "my-ecs-service"
+  cluster          = aws_ecs_cluster.ecs_cluster.id
+  task_definition  = aws_ecs_task_definition.ecs_task_definition.arn
   desired_count    = 1
   launch_type      = "FARGATE"
   platform_version = "LATEST"
 
   network_configuration {
     assign_public_ip = true
-    security_groups  = [aws_security_group.ecs_sg.id]
-    subnets          = [aws_subnet.public_subnet.id]
+    security_groups  = [aws_security_group.security_group.id]
+    subnets          = [aws_subnet.demo_public_subnet.id]
   }
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.ecs_lb_target_group.arn
+    target_group_arn = aws_lb_target_group.lb_target_group.arn
     container_name   = "nginx"
     container_port   = 80
   }
@@ -58,3 +61,4 @@ resource "aws_ecs_service" "service" {
     ignore_changes = [task_definition]
   }
 }
+

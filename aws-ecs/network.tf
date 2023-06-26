@@ -1,19 +1,32 @@
 resource "aws_vpc" "main" {
-  cidr_block = var.vpc_cidr
+  cidr_block = var.vpc_cidr[0]
 
   tags = {
     Name = "main"
   }
 }
 
+// Create a public subnet to distribute the EC2 instance across
 resource "aws_subnet" "public_subnet" {
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, 1) // Takes 10.0.0.0/16 --> 10.0.1.0/24
-  availability_zone       = var.availability_zones[0]                 // Use the first availability zone by default
+  cidr_block              = var.vpc_cidr[1]
   map_public_ip_on_launch = true
+  availability_zone       = var.availability_zones[0]
 
   tags = {
-    Name = "public-subnet"
+    Name = "dev-public"
+  }
+}
+
+// Create a public subnet to distribute the EC2 instance across
+resource "aws_subnet" "public_subnet_b" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = var.vpc_cidr[2]
+  map_public_ip_on_launch = true
+  availability_zone       = var.availability_zones[1]
+
+  tags = {
+    Name = "dev-public-b"
   }
 }
 
