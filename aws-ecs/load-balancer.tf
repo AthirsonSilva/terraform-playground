@@ -1,7 +1,7 @@
 # Create a AWS Load balancer
 # This load balancer will be used by the ECS service
 resource "aws_lb" "ecs_load_balancer" {
-  name               = "my-lb"
+  name               = "ecs-lb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.ecs_sg.id]
@@ -40,3 +40,4 @@ resource "aws_lb_listener" "ecs_http_listener" {
     target_group_arn = aws_lb_target_group.ecs_lb_target_group.arn
   }
 }
+
